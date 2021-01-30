@@ -24,6 +24,7 @@ public class Main {
         List<String> options = List.of(args);
         if (options.contains("-h") || options.contains("--help")) {
             printHelp();
+            return;
         }
 
         try {
