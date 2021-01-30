@@ -1,0 +1,23 @@
+plugins {
+    id "java"
+}
+
+sourceCompatibility = 11
+targetCompatibility = 11
+
+compileJava.options.encoding = "UTF-8"
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+
+}
+
+jar {
+    archiveBaseName = "renamer"
+    manifest {
+        attributes "Main-Class": "renamer.Main"
+    }
+}

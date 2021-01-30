@@ -1,0 +1,18 @@
+$ java -jar renamer.jar [options] <directory>
+
+オプション
+  -h, --help: ヘルプの表示
+  -p, --prefix: ファイル名のプレフィックス（デフォルトは空文字）
+  -e, --extension: ファイルの拡張子（デフォルトはオリジナルの拡張子を、そのまま使用する）
+  -b, --begin: ファイル名に使用する連番の開始番号（デフォルトは1）
+  -w, --width: ファイル名に使用する連番の桁数（デフォルトは4）
+
+例
+  $ java -jar rename.jar path/to/dir
+    path\to\dir に存在するファイルをすべてリネーム。
+    拡張子はそのまま使用し、ファイル名が1始まりの4桁数字に置き換えられる。
+
+  $ java -jar rename.jar -p test_ -e jpg -b 10 -w 5 path/to/dir
+    path/to/dir に存在するファイルをすべてリネーム。
+    ファイル名を test_00000.jpg に置き換える。
+    00000 の部分は 10 始まりの連番。
