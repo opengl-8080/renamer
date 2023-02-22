@@ -10,6 +10,7 @@ import java.nio.file.Path;
 import java.util.Comparator;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Objects;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -19,6 +20,7 @@ public class Main {
     private static int begin = 1;
     private static int width = 4;
     private static Path directory = null;
+    private static boolean numeric = false;
 
     public static void main(String[] args) {
         List<String> options = List.of(args);
@@ -34,9 +36,20 @@ public class Main {
             return;
         }
 
-        List<File> files = Stream.of(directory.toFile().listFiles())
+        Comparator<File> comparator;
+        if (numeric) {
+            comparator = Comparator.comparing(file -> {
+                final int dot = file.getName().lastIndexOf(".");
+                final String baseName = file.getName().substring(0, dot);
+                return Integer.parseInt(baseName);
+            });
+        } else {
+            comparator = Comparator.comparing(File::getName);
+        }
+
+        List<File> files = Stream.of(Objects.requireNonNull(directory.toFile().listFiles()))
                 .filter(File::isFile)
-                .sorted(Comparator.comparing(File::getName))
+                .sorted(comparator)
                 .collect(Collectors.toList());
 
         if (files.isEmpty()) {
@@ -128,6 +141,8 @@ public class Main {
                 if (width < 1) {
                     throw new InvalidOptionException("連番桁数は1以上を指定してください begin=" + begin);
                 }
+            } else if (option.equals("-n")) {
+                numeric = true;
             } else if (option.startsWith("-")) {
                 throw new InvalidOptionException("不明なオプションです option=" + option);
             } else {
