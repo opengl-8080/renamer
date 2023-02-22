@@ -7,6 +7,7 @@ $ java -jar renamer.jar [options] <directory>
   -b, --begin: ファイル名に使用する連番の開始番号（デフォルトは1）
   -w, --width: ファイル名に使用する連番の桁数（デフォルトは4）
   -n: ファイル名を数値として比較する
+  -u: 更新日時の昇順でソートしてリネームする (-n より優先)
 
 例
   $ java -jar rename.jar path/to/dir

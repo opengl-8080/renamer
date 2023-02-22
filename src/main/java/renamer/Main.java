@@ -22,6 +22,8 @@ public class Main {
     private static Path directory = null;
     private static boolean numeric = false;
 
+    private static boolean sortByUpdateDate = false;
+
     public static void main(String[] args) {
         List<String> options = List.of(args);
         if (options.contains("-h") || options.contains("--help")) {
@@ -37,13 +39,18 @@ public class Main {
         }
 
         Comparator<File> comparator;
-        if (numeric) {
+        if (sortByUpdateDate) {
+            // 更新日時の昇順でソート
+            comparator = Comparator.comparing(File::lastModified);
+        } else if (numeric) {
+            // ファイル名を数値としてソート
             comparator = Comparator.comparing(file -> {
                 final int dot = file.getName().lastIndexOf(".");
                 final String baseName = file.getName().substring(0, dot);
                 return Integer.parseInt(baseName);
             });
         } else {
+            // ファイル名でソート
             comparator = Comparator.comparing(File::getName);
         }
 
@@ -63,6 +70,7 @@ public class Main {
                 "開始連番 : " + begin + "\n" +
                 "連番桁数 : " + width + "\n" +
                 "対象ディレクトリ : " + directory + "\n" +
+                "ソート条件 : " + (sortByUpdateDate ? "更新日付" : "ファイル名") + "\n" +
                 "\n" +
                 "よろしいですか？(y/n) > ";
         String line = System.console().readLine(message);
@@ -143,6 +151,8 @@ public class Main {
                 }
             } else if (option.equals("-n")) {
                 numeric = true;
+            } else if (option.equals("-u")) {
+                sortByUpdateDate = true;
             } else if (option.startsWith("-")) {
                 throw new InvalidOptionException("不明なオプションです option=" + option);
             } else {
